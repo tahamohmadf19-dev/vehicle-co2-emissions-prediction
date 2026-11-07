@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-This project develops a **high-precision regression model** to predict vehicle CO₂ emissions based on technical specifications such as engine size, fuel consumption, and vehicle class. Using data from **Transport Canada**, the final **Random Forest Regressor** achieves an exceptional **R² of 0.9972** on the test set, with an average prediction error of less than **2 g/km**.
+This project builds a regression model to predict vehicle CO₂ emissions from technical specifications such as engine size, fuel consumption, and vehicle class. Using data from **Transport Canada**, the final **Random Forest Regressor** reaches an **R² of 0.9972** on the test set in the saved notebook run. That figure is likely optimistic: see [Limitations of the reported scores](#limitations-of-the-reported-scores).
 
 The model provides actionable insights for environmental policy, vehicle purchasing decisions, and automotive engineering, demonstrating how machine learning can support sustainability goals.
 
@@ -57,7 +57,7 @@ Transportation is a major contributor to greenhouse gas emissions. Accurate pred
 ### 1. Data Exploration and Cleaning
 
 - **Completeness check**: Verified no missing values
-- **Duplicate handling**: Preserved intentionally (reflect market distribution)
+- **Duplicate handling**: 1,103 of 7,385 rows (15%) are exact duplicates. They were kept, and the random split happens afterwards, so identical rows can appear in both training and test sets
 - **Outlier analysis**: Identified but retained (represent real extreme cases)
 - **Distribution analysis**: Examined target variable and feature relationships
 
@@ -123,6 +123,10 @@ The **Random Forest Regressor** achieved:
 - **R² (Test)**: 0.9972
 - **RMSE (Test)**: 3.03 g/km
 - **MAE (Test)**: 1.94 g/km
+
+### Limitations of the reported scores
+
+The notebook reports 1,103 exact duplicate rows out of 7,385 and splits the data at random after keeping them. A test row can therefore have an identical copy in the training set, which inflates the test scores above. They have not been re-measured on a de-duplicated split. CO₂ emissions are also close to a direct function of fuel consumption, so a high R² here says little about harder prediction problems.
 
 ### Key Insights
 
