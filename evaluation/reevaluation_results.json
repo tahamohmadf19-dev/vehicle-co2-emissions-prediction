@@ -1,0 +1,157 @@
+{
+  "dataset": {
+    "rows": 7385,
+    "exact_duplicate_rows": 1103,
+    "rows_after_dedup": 6282
+  },
+  "reproduction": {
+    "r2": 0.9972,
+    "rmse": 3.03,
+    "mae": 1.94,
+    "rows": 7385,
+    "test_rows": 1477,
+    "test_rows_identical_to_a_training_row": 246
+  },
+  "dedup_random": {
+    "r2": 0.9968,
+    "rmse": 3.52,
+    "mae": 2.25,
+    "rows": 6282,
+    "test_rows": 1257,
+    "test_rows_identical_to_a_training_row": 0
+  },
+  "dedup_grouped_by_make_model": {
+    "r2": {
+      "mean": 0.9948,
+      "std": 0.0039
+    },
+    "rmse": {
+      "mean": 4.04,
+      "std": 1.45
+    },
+    "mae": {
+      "mean": 2.11,
+      "std": 0.17
+    },
+    "folds": 5,
+    "groups": 2053,
+    "per_fold": [
+      {
+        "r2": 0.9973,
+        "rmse": 2.87,
+        "mae": 2.07
+      },
+      {
+        "r2": 0.9959,
+        "rmse": 3.9,
+        "mae": 2.07
+      },
+      {
+        "r2": 0.9977,
+        "rmse": 2.83,
+        "mae": 1.93
+      },
+      {
+        "r2": 0.9872,
+        "rmse": 6.79,
+        "mae": 2.43
+      },
+      {
+        "r2": 0.9961,
+        "rmse": 3.79,
+        "mae": 2.05
+      }
+    ]
+  },
+  "baseline_fuel_consumption_only": {
+    "r2": {
+      "mean": 0.8401,
+      "std": 0.0092
+    },
+    "rmse": {
+      "mean": 23.66,
+      "std": 1.18
+    },
+    "mae": {
+      "mean": 14.49,
+      "std": 0.65
+    },
+    "folds": 5,
+    "groups": 2053,
+    "per_fold": [
+      {
+        "r2": 0.8507,
+        "rmse": 21.37,
+        "mae": 13.27
+      },
+      {
+        "r2": 0.8466,
+        "rmse": 23.81,
+        "mae": 14.54
+      },
+      {
+        "r2": 0.8247,
+        "rmse": 24.72,
+        "mae": 14.63
+      },
+      {
+        "r2": 0.8351,
+        "rmse": 24.33,
+        "mae": 14.84
+      },
+      {
+        "r2": 0.8433,
+        "rmse": 24.05,
+        "mae": 15.17
+      }
+    ]
+  },
+  "baseline_fuel_consumption_and_fuel_type": {
+    "r2": {
+      "mean": 0.9902,
+      "std": 0.0025
+    },
+    "rmse": {
+      "mean": 5.82,
+      "std": 0.88
+    },
+    "mae": {
+      "mean": 3.24,
+      "std": 0.17
+    },
+    "folds": 5,
+    "groups": 2053,
+    "per_fold": [
+      {
+        "r2": 0.9939,
+        "rmse": 4.31,
+        "mae": 2.98
+      },
+      {
+        "r2": 0.9901,
+        "rmse": 6.06,
+        "mae": 3.2
+      },
+      {
+        "r2": 0.9901,
+        "rmse": 5.88,
+        "mae": 3.24
+      },
+      {
+        "r2": 0.9861,
+        "rmse": 7.06,
+        "mae": 3.5
+      },
+      {
+        "r2": 0.9909,
+        "rmse": 5.79,
+        "mae": 3.27
+      }
+    ]
+  },
+  "environment": {
+    "python": "3.13.12",
+    "scikit_learn": "1.7.2",
+    "pandas": "2.3.3"
+  }
+}

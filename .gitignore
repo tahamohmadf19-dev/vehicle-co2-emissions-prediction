@@ -44,3 +44,6 @@ kaggle.json
 
 # Logs
 *.log
+
+# Re-evaluation results are small and referenced from the README. Other JSON (such as kaggle.json) stays ignored.
+!evaluation/reevaluation_results.json

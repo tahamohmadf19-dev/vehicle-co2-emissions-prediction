@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-This project builds a regression model to predict vehicle CO₂ emissions from technical specifications such as engine size, fuel consumption, and vehicle class. Using data from **Transport Canada**, the final **Random Forest Regressor** reaches an **R² of 0.9972** on the test set in the saved notebook run. That figure is likely optimistic: see [Limitations of the reported scores](#limitations-of-the-reported-scores).
+This project builds a regression model to predict vehicle CO₂ emissions from technical specifications such as engine size, fuel consumption, and vehicle class. Using data from **Transport Canada**, the final **Random Forest Regressor** reaches an **R² of 0.9972** on the test set in the saved notebook run. Re-evaluated without duplicate leakage and with whole vehicle models held out, it reaches **R² 0.9948 ± 0.0039 (RMSE 4.04 g/km)**: see [Re-evaluation without leakage](#re-evaluation-without-leakage).
 
 The model provides actionable insights for environmental policy, vehicle purchasing decisions, and automotive engineering, demonstrating how machine learning can support sustainability goals.
 
@@ -57,7 +57,7 @@ Transportation is a major contributor to greenhouse gas emissions. Accurate pred
 ### 1. Data Exploration and Cleaning
 
 - **Completeness check**: Verified no missing values
-- **Duplicate handling**: 1,103 of 7,385 rows (15%) are exact duplicates. They were kept, and the random split happens afterwards, so identical rows can appear in both training and test sets
+- **Duplicate handling**: 1,103 of 7,385 rows (15%) are exact duplicates. The notebook keeps them before a random split; the re-evaluation below removes them first
 - **Outlier analysis**: Identified but retained (represent real extreme cases)
 - **Distribution analysis**: Examined target variable and feature relationships
 
@@ -126,13 +126,30 @@ The **Random Forest Regressor** achieved:
 
 ### Limitations of the reported scores
 
-The notebook reports 1,103 exact duplicate rows out of 7,385 and splits the data at random after keeping them. A test row can therefore have an identical copy in the training set, which inflates the test scores above. They have not been re-measured on a de-duplicated split. CO₂ emissions are also close to a direct function of fuel consumption, so a high R² here says little about harder prediction problems.
+The scores above come from the notebook's random split, taken after keeping 1,103 exact duplicate rows out of 7,385. In that split, 246 of the 1,477 test rows have an identical copy in the training set.
+
+### Re-evaluation without leakage
+
+`python evaluation/reevaluate.py "<path to CO2 Emissions_Canada.csv>"` repeats the notebook's features and model (RandomForest, 400 trees) under stricter splits. Results are saved in [evaluation/reevaluation_results.json](evaluation/reevaluation_results.json). Run on 2026-11-07 with scikit-learn 1.7.2.
+
+| Evaluation | R² | RMSE (g/km) | MAE (g/km) |
+|---|---:|---:|---:|
+| Notebook split, duplicates kept (reproduced) | 0.9972 | 3.03 | 1.94 |
+| Duplicates removed first, same random split | 0.9968 | 3.52 | 2.25 |
+| **Duplicates removed, 5-fold GroupKFold by make and model** | **0.9948 ± 0.0039** | **4.04** | **2.11** |
+| Baseline: straight line on combined fuel consumption and fuel type | 0.9902 | 5.82 | 3.24 |
+| Baseline: straight line on combined fuel consumption only | 0.8401 | 23.66 | 14.49 |
+
+**How to read this:**
+- Duplicate leakage was real but small. Removing it raises the error by 16 to 33%, while R² barely moves.
+- The grouped result is the honest estimate for a vehicle model the model has never seen.
+- A straight line on fuel consumption and fuel type already explains 99.0% of the variance, because emissions follow from the fuel burnt. The random forest's gain over that line is RMSE 5.82 → 4.04 g/km. A high R² on this dataset therefore says little about harder prediction problems.
 
 ### Key Insights
 
-- **Exceptional predictive accuracy**: R² > 0.99 indicates CO₂ emissions are highly predictable from vehicle specifications
-- **Low prediction error**: Average error under 2 g/km is excellent for practical applications
-- **Strong generalization**: Test performance matches validation performance
+- **Predictable target**: R² > 0.99, but a straight line on fuel consumption and fuel type already reaches 0.990
+- **Error on unseen vehicle models**: RMSE 4.04 g/km and MAE 2.11 g/km in grouped cross-validation (the notebook's 1.94 g/km MAE comes from a split with duplicate leakage)
+- **Generalization**: holds across held-out vehicle models (per-fold R² from 0.9872 to 0.9977)
 - **Feature importance**: Combined fuel consumption is the dominant predictor, followed by engine design metrics
 
 ## Feature Importance Analysis
