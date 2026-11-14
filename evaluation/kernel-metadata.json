@@ -1,0 +1,14 @@
+{
+  "id": "tahamohmad/vehicle-co2-leakage-free-evaluation",
+  "title": "Vehicle CO2 Emissions: Leakage-Free Evaluation",
+  "code_file": "leakage_free_evaluation.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["debajyotipodder/co2-emission-by-vehicles"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
