@@ -144,6 +144,11 @@ The scores above come from the notebook's random split, taken after keeping 1,10
 - Duplicate leakage was real but small. Removing it raises the error by 16 to 33%, while R² barely moves.
 - The grouped result is the honest estimate for a vehicle model the model has never seen.
 - A straight line on fuel consumption and fuel type already explains 99.0% of the variance, because emissions follow from the fuel burnt. The random forest's gain over that line is RMSE 5.82 → 4.04 g/km. A high R² on this dataset therefore says little about harder prediction problems.
+- **The grouped figures depend on how groups are assigned to folds.** scikit-learn 1.9 assigns groups to `GroupKFold` folds differently from 1.7. With scikit-learn 1.9.1 (2026-11-14), the same code gives R² 0.9937 ± 0.0064, RMSE 4.15 ± 2.03 g/km and MAE 2.11, and the fuel-and-type baseline gives RMSE 5.84. scikit-learn 1.7.2 reproduces the table above exactly. The conclusion is unchanged: about R² 0.994 and RMSE 4 g/km on unseen vehicle models, roughly 1.7 g/km better than the straight-line baseline. The large RMSE spread comes from one hard fold.
+
+### Kaggle-ready notebook
+
+[evaluation/leakage_free_evaluation.ipynb](evaluation/leakage_free_evaluation.ipynb) runs the same evaluation as a notebook, with saved outputs (scikit-learn 1.9.1). It finds the CSV under `/kaggle/input`, in `CO2_CSV`, or downloads it with kagglehub.
 
 ### Key Insights
 
